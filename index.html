@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0a0c">
+  <title>Rosalind Zhang — Personal Archive</title>
+  <meta name="description" content="Personal knowledge, research, creative work and sparkling times of Rosalind Zhang.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="grain"></div>
+
+  <header class="topbar">
+    <a class="wordmark" href="#home">RZ<span>.</span></a>
+    <nav>
+      <a href="#medicine">Medicine</a>
+      <a href="#research">Research</a>
+      <a href="#creative">Creative</a>
+      <a href="#sparkling">Sparkling Times</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+    <span class="date" id="today"></span>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-image" aria-hidden="true"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content reveal">
+        <p class="eyebrow">PERSONAL ARCHIVE · 2026—</p>
+        <h1>Rosalind<br><em>Zhang</em></h1>
+        <p class="tagline">Learning how complex systems<br>become useful.</p>
+        <a class="enter" href="#checklist">Enter the archive <span>↓</span></a>
+      </div>
+      <div class="hero-side">MEDICINE / RESEARCH / CREATIVE WORK / LIFE</div>
+    </section>
+
+    <section class="manifesto section">
+      <p class="section-number">00 / INDEX</p>
+      <div class="manifesto-grid">
+        <h2>Knowledge is collected.<br><em>Life is lived.</em><br>Both deserve an archive.</h2>
+        <p>
+          A living record of things learned, questions investigated, things made,
+          places remembered, and moments that sparkled enough to keep.
+        </p>
+      </div>
+    </section>
+
+    <section id="medicine" class="section split">
+      <div>
+        <p class="section-number">01 / MEDICINE</p>
+        <h2>Study the<br><em>system.</em></h2>
+      </div>
+      <div class="cards">
+        <article><span>01</span><h3>Physiology</h3><p>Mechanisms, notes, diagrams and questions.</p></article>
+        <article><span>02</span><h3>Biochemistry</h3><p>Structure → reaction → regulation → application.</p></article>
+        <article><span>03</span><h3>Anatomy</h3><p>Regional anatomy and visual learning archive.</p></article>
+      </div>
+    </section>
+
+    <section id="research" class="section dark-panel">
+      <p class="section-number">02 / RESEARCH</p>
+      <div class="research-head">
+        <h2>Questions<br>worth <em>building.</em></h2>
+        <p>Research projects, literature, data and experiments — kept as working records rather than polished summaries.</p>
+      </div>
+      <div class="project-list">
+        <a href="#"><span>01</span><b>Bladder Cancer</b><i>CT · Clinical Data · Pathology · AI</i></a>
+        <a href="#"><span>02</span><b>Urethral Stricture</b><i>Rabbit Model · Imaging · Histology</i></a>
+        <a href="#"><span>03</span><b>Medical AI</b><i>RAG · OCR · Data Analysis</i></a>
+      </div>
+    </section>
+
+    <section id="creative" class="section">
+      <p class="section-number">03 / CREATIVE</p>
+      <div class="creative-grid">
+        <div><h2>Observe.<br><em>Frame.</em><br>Cut.</h2></div>
+        <div class="creative-note">
+          <p>Photography · Video · Writing · Visual experiments</p>
+          <p class="muted">Your photographs can become the visual language of this archive. Replace the hero image with your own work in <code>assets/hero.jpg</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sparkling" class="section sparkling">
+      <p class="section-number">04 / SPARKLING TIMES</p>
+      <div class="sparkling-title">
+        <h2>The moments<br>that <em>glow.</em></h2>
+        <p>Not everything has to be productive to be worth remembering.</p>
+      </div>
+      <div class="memory-grid">
+        <article class="memory-card"><span>SEP · 2026</span><h3>A new court.</h3><p>Tennis begins.</p></article>
+        <article class="memory-card"><span>2026</span><h3>First archive.</h3><p>A domain becomes a place.</p></article>
+        <article class="memory-card"><span>—</span><h3>Your next moment.</h3><p>Replace this with a photograph and a sentence.</p></article>
+      </div>
+    </section>
+
+    <section id="checklist" class="section checklist-section">
+      <p class="section-number">05 / CHECKLIST</p>
+      <div class="check-head">
+        <div>
+          <h2>Today,<br><em>make something.</em></h2>
+          <p id="progressText">0 / 0 completed</p>
+        </div>
+        <button id="clearDone" class="text-button">Clear completed</button>
+      </div>
+
+      <div class="check-grid">
+        <div class="check-column">
+          <h3>MEDICINE</h3>
+          <label><input type="checkbox" data-task="physiology"><span>Physiology</span></label>
+          <label><input type="checkbox" data-task="biochemistry"><span>Biochemistry</span></label>
+          <label><input type="checkbox" data-task="anatomy"><span>Regional Anatomy</span></label>
+        </div>
+        <div class="check-column">
+          <h3>LANGUAGE</h3>
+          <label><input type="checkbox" data-task="english"><span>English</span></label>
+          <label><input type="checkbox" data-task="reading"><span>Read 20 pages</span></label>
+          <label><input type="checkbox" data-task="writing"><span>Write something</span></label>
+        </div>
+        <div class="check-column">
+          <h3>BODY</h3>
+          <label><input type="checkbox" data-task="tennis"><span>Tennis</span></label>
+          <label><input type="checkbox" data-task="running"><span>Running</span></label>
+          <label><input type="checkbox" data-task="stretch"><span>Stretch / mobility</span></label>
+        </div>
+        <div class="check-column">
+          <h3>CREATIVE</h3>
+          <label><input type="checkbox" data-task="photo"><span>Photography</span></label>
+          <label><input type="checkbox" data-task="editing"><span>Video editing</span></label>
+          <label><input type="checkbox" data-task="archive"><span>Archive one moment</span></label>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-mark">RZ.</div>
+    <p>Personal knowledge, research, creative work and sparkling times of Rosalind Zhang.</p>
+    <span>© <span id="year"></span></span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
