@@ -1,0 +1,19 @@
+{
+  "name": "rosalind-personal-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "wrangler dev",
+    "test": "node --test",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "jose": "6.2.13"
+  },
+  "devDependencies": {
+    "marked": "18.1.2",
+    "sanitize-html": "2.18.1",
+    "wrangler": "4.155.0"
+  }
+}

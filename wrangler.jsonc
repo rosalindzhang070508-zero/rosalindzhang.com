@@ -1,0 +1,12 @@
+{
+  "name": "rosalindzhang-personal-site",
+  "main": "src/worker.mjs",
+  "compatibility_date": "2026-10-29",
+  "workers_dev": false,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  }
+}
