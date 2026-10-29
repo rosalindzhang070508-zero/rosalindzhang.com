@@ -31,3 +31,7 @@ This is a **Cloudflare Worker with Static Assets**, not a static Pages deploymen
 - Worker-first static asset routing: https://developers.cloudflare.com/workers/static-assets/binding/
 
 The website was returning an empty HTTP 404 on 2026-10-29 before these changes. Source completion does not confirm production deployment or account-level security settings.
+
+## Portfolio update
+The public portfolio now includes a descriptive OCR tool case study, six technical-route figures and three scientific figure panels. All new image metadata is stripped. Original source scripts and tutorial PDFs from the desktop portfolio are excluded because of embedded credentials and data screenshots. Display images do not assert ownership of the underlying scientific study.
+

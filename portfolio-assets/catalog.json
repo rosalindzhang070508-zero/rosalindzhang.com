@@ -1,0 +1,74 @@
+[
+  {
+    "id": "route-color-1",
+    "category": "技术路线",
+    "title": "技术路线 1 · 彩色流程版",
+    "image": "route-color-1.png",
+    "thumb": "route-color-1-thumb.webp",
+    "description": "研究步骤、分支与评估环节的可视化编排。"
+  },
+  {
+    "id": "route-outline-1",
+    "category": "技术路线",
+    "title": "技术路线 1 · 图文整合版",
+    "image": "route-outline-1.png",
+    "thumb": "route-outline-1-thumb.webp",
+    "description": "研究步骤、分支与评估环节的可视化编排。"
+  },
+  {
+    "id": "route-color-2",
+    "category": "技术路线",
+    "title": "技术路线 2 · 彩色流程版",
+    "image": "route-color-2.png",
+    "thumb": "route-color-2-thumb.webp",
+    "description": "研究步骤、分支与评估环节的可视化编排。"
+  },
+  {
+    "id": "route-outline-2",
+    "category": "技术路线",
+    "title": "技术路线 2 · 图文整合版",
+    "image": "route-outline-2.png",
+    "thumb": "route-outline-2-thumb.webp",
+    "description": "研究步骤、分支与评估环节的可视化编排。"
+  },
+  {
+    "id": "route-color-3",
+    "category": "技术路线",
+    "title": "技术路线 3 · 彩色流程版",
+    "image": "route-color-3.png",
+    "thumb": "route-color-3-thumb.webp",
+    "description": "研究步骤、分支与评估环节的可视化编排。"
+  },
+  {
+    "id": "route-outline-3",
+    "category": "技术路线",
+    "title": "技术路线 3 · 图文整合版",
+    "image": "route-outline-3.png",
+    "thumb": "route-outline-3-thumb.webp",
+    "description": "研究步骤、分支与评估环节的可视化编排。"
+  },
+  {
+    "id": "paper-figure-1",
+    "category": "论文配图",
+    "title": "多模态影像研究流程",
+    "image": "paper-figure-1.png",
+    "thumb": "paper-figure-1-thumb.webp",
+    "description": "科研图形与信息排版作品展示。图中数据与研究归属需以对应论文为准。"
+  },
+  {
+    "id": "paper-figure-2",
+    "category": "论文配图",
+    "title": "列线图与 ROC 多面板",
+    "image": "paper-figure-2.png",
+    "thumb": "paper-figure-2-thumb.webp",
+    "description": "科研图形与信息排版作品展示。图中数据与研究归属需以对应论文为准。"
+  },
+  {
+    "id": "paper-figure-3",
+    "category": "论文配图",
+    "title": "决策曲线与校准分析",
+    "image": "paper-figure-3.png",
+    "thumb": "paper-figure-3-thumb.webp",
+    "description": "科研图形与信息排版作品展示。图中数据与研究归属需以对应论文为准。"
+  }
+]
