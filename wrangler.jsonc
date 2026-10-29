@@ -8,5 +8,12 @@
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": true
-  }
+  },
+  "account_id": "bbef39f5aa493977727606bfa3204998",
+  "routes": [
+    {
+      "pattern": "rosalindzhang.com/*",
+      "zone_name": "rosalindzhang.com"
+    }
+  ]
 }
