@@ -196,15 +196,19 @@ body[data-theme="night"] .check-input{background:#0d1110;color:#eee9df;border-co
   .checklist-head p{margin-top:16px}
   .check-card{padding:20px}
 }
-</style></head><body>
+</style>
+<link rel="stylesheet" href="explore.css">
+<script src="explore.js" defer></script>
+</head><body data-route="home">
 <header>
 <a class="brand" href="#top">Rosalind Zhang</a>
-<nav class="nav"><a href="#visual">Visual Journal</a><a href="#life">About</a><a href="#research">Research</a><a href="#notes">Notes</a><a href="#projects">Projects</a><a href="#checklist">Checklist</a></nav>
+<nav class="nav" aria-label="主导航"><a href="visual.html" data-route-link>Visual Journal</a><a href="about.html" data-route-link>About</a><a href="research.html" data-route-link>Research</a><a href="notes.html" data-route-link>Notes</a><a href="projects.html" data-route-link>Projects</a><a href="#checklist">Checklist</a></nav>
 <div class="theme-switcher" aria-label="Theme">
   <button class="theme-btn" data-theme-choice="day" type="button">☼ DAY</button>
   <button class="theme-btn" data-theme-choice="system" type="button">◐ AUTO</button>
   <button class="theme-btn" data-theme-choice="night" type="button">☾ NIGHT</button>
 </div>
+<button class="route-map-toggle" type="button" data-route-map-toggle aria-haspopup="dialog" aria-controls="routeMap">MAP <span>↗</span></button>
 <button class="osbtn openos">Private OS</button>
 </header>
 
@@ -318,9 +322,11 @@ body[data-theme="night"] .check-input{background:#0d1110;color:#eee9df;border-co
     <div class="check-progress"><span id="checkProgress">0 / 0 DONE</span><span>LOCAL · PRIVATE · PERSISTENT</span></div>
   </div>
 </section>
-<section class="closing"><div class="closing-inner"><h2>Keep what is useful.<br>Keep what is yours.</h2><p>这个版本已经尽量把本轮提供的图片都纳入页面。正式站上线前，再根据实际内容把它们分配到 Home / Visual Journal / About / Research / Now / Essays 等真实路由中。</p></div></section>
+<section class="closing"><div class="closing-inner"><h2>Keep what is useful.<br>Keep what is yours.</h2><p>让每一次观察都留下可以回来的入口：照片成为视觉档案，问题进入研究脉络，笔记回到原始材料，项目再把它们变成下一步。</p></div></section>
+<section class="route-bridge" aria-labelledby="routeBridgeTitle"><div class="route-bridge-inner"><div class="route-bridge-head"><div><p class="route-bridge-kicker">ARCHIVE / ROUTE MAP</p><h2 id="routeBridgeTitle">继续走，不必回到起点。</h2></div><p class="route-bridge-copy">首页是入口；每一页都有自己的主题，并在结尾把你带到下一段内容。</p></div><nav class="route-bridge-grid" aria-label="浏览路线"><a class="route-bridge-card" href="visual.html" data-route-link><span>01 / OBSERVE</span><b>Visual<br>Journal</b><i>↗</i></a><a class="route-bridge-card" href="about.html" data-route-link><span>02 / CONTEXT</span><b>About</b><i>↗</i></a><a class="route-bridge-card" href="research.html" data-route-link><span>03 / QUESTION</span><b>Research</b><i>↗</i></a><a class="route-bridge-card" href="notes.html" data-route-link><span>04 / KEEP</span><b>Notes</b><i>↗</i></a><a class="route-bridge-card" href="projects.html" data-route-link><span>05 / MAKE</span><b>Projects</b><i>↗</i></a></nav></div></section>
 <footer><div>Rosalind Zhang · Personal Site Prototype · 2026</div><div>Research · Notes · Projects · Visual Journal</div></footer>
 
+<dialog class="route-map" id="routeMap" aria-labelledby="routeMapTitle"><div class="route-map-inner"><div class="route-map-top"><div><h2 class="route-map-title" id="routeMapTitle">Choose a<br>direction.</h2><p class="route-map-copy">从一个主题进入，再让它自然引向下一个主题。按 <b>M</b> 随时打开路线图。</p></div><button class="route-map-close" type="button" data-route-map-close aria-label="关闭路线图">×</button></div><nav class="route-map-grid" aria-label="路线图"><a class="route-map-link" data-route="home" href="index.html" data-route-link><span class="route-map-step">00 / Start</span><b class="route-map-name">Home</b><span class="route-map-status">current</span></a><a class="route-map-link" data-route="visual" href="visual.html" data-route-link><span class="route-map-step">01 / Observe</span><b class="route-map-name">Visual</b><span class="route-map-status">explore</span></a><a class="route-map-link" data-route="about" href="about.html" data-route-link><span class="route-map-step">02 / Context</span><b class="route-map-name">About</b><span class="route-map-status">context</span></a><a class="route-map-link" data-route="research" href="research.html" data-route-link><span class="route-map-step">03 / Question</span><b class="route-map-name">Research</b><span class="route-map-status">study</span></a><a class="route-map-link" data-route="notes" href="notes.html" data-route-link><span class="route-map-step">04 / Keep</span><b class="route-map-name">Notes</b><span class="route-map-status">read</span></a><a class="route-map-link" data-route="projects" href="projects.html" data-route-link><span class="route-map-step">05 / Make</span><b class="route-map-name">Projects</b><span class="route-map-status">build</span></a></nav></div></dialog><div class="route-live" id="routeLive" aria-live="polite"></div>
 <dialog id="osModal"><div class="os"><aside><b>RZ / Private OS</b><nav><button>Overview</button><button>Execution</button><button>Finance</button><button>Health</button><button>Worldview</button><button>Review</button></nav></aside><main><div class="os-top"><div><div class="eyebrow">PERSONAL OPERATING SYSTEM</div><h3>Today</h3></div><button class="close" id="closeOS">×</button></div><div class="os-hero"><div class="eyebrow">CORE LOOP</div><h3 style="font-family:Georgia,serif;font-size:28px;margin:5px 0">Perception → Judgment → Action</h3></div><div class="os-kpis"><div><span>TOP 3</span><b>2 / 3</b></div><div><span>DEEP WORK</span><b>4 blocks</b></div><div><span>HEALTH</span><b>81%</b></div><div><span>REALITY SAMPLES</span><b>3</b></div></div></main></div></dialog>
 
 <script>
