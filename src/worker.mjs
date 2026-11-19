@@ -8,7 +8,8 @@ export const feeds=[
  {id:'solidot',name:'Solidot',category:'科技',kind:'刊物',url:'https://www.solidot.org/index.rss',home:'https://www.solidot.org/',hosts:['solidot.org']},
  {id:'hacker-news',name:'Hacker News',category:'科技',kind:'社区',url:'https://news.ycombinator.com/rss',home:'https://news.ycombinator.com/',hosts:['news.ycombinator.com']},
  {id:'sciencedaily',name:'ScienceDaily',category:'医学',kind:'刊物',url:'https://www.sciencedaily.com/rss/health_medicine.xml',home:'https://www.sciencedaily.com/news/health_medicine/',hosts:['sciencedaily.com']},
- {id:'nature',name:'Nature',category:'科研',kind:'刊物',url:'https://www.nature.com/nature.rss',home:'https://www.nature.com/nature/',hosts:['nature.com']},
+ {id:'guardian-world',name:'The Guardian',category:'新闻',kind:'刊物',url:'https://www.theguardian.com/world/rss',home:'https://www.theguardian.com/world',hosts:['theguardian.com']},
+ {id:'guardian-science',name:'The Guardian Science',category:'科研',kind:'刊物',url:'https://www.theguardian.com/science/rss',home:'https://www.theguardian.com/science',hosts:['theguardian.com']},
  {id:'bbc-youtube',name:'BBC News · YouTube',category:'视频',kind:'视频',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UC16niRr50-MSBwiO3YDb3RA',home:'https://www.youtube.com/@BBCNews',hosts:['youtube.com','youtu.be']},
  {id:'kurzgesagt',name:'Kurzgesagt · YouTube',category:'视频',kind:'视频',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q',home:'https://www.youtube.com/@kurzgesagt',hosts:['youtube.com','youtu.be']}
 ];
@@ -84,7 +85,7 @@ async function news(request,ctx,env){
  const refresh=new URL(request.url).searchParams.get('refresh')==='1';
  const hit=!refresh&&cache?await cache.match(cacheKey):null;if(hit)return hit;
  const results=await Promise.all(feeds.map(async feed=>{
-  try {const r=await fetch(feed.url,{signal:AbortSignal.timeout(8000),headers:{Accept:'application/rss+xml, application/atom+xml, text/xml'}});return {source:sourceView(feed),items:parseFeedEntries(await limitedText(r),feed)};}
+  try {const r=await fetch(feed.url,{signal:AbortSignal.timeout(8000),headers:{Accept:'application/rss+xml, application/atom+xml, text/xml'}});const items=parseFeedEntries(await limitedText(r),feed);return {source:{...sourceView(feed),state:items.length?'active':'unavailable'},items};}
   catch{return {source:{...sourceView(feed),state:'unavailable'},items:[]};}
  }));
  const x=await xEntries(env);
