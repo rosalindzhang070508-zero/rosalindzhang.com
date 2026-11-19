@@ -26,6 +26,16 @@ This is a **Cloudflare Worker with Static Assets**, not a static Pages deploymen
 ## Local review
 `npm ci`, `npm run build`, `npm test`, `npm run dev`. The unconfigured private route deliberately returns 503 locally. A real Access login is validated only after the owner configures the Cloudflare application. Never add a local-only bypass to production.
 
+## Optional X source
+The public news panel can include posts from selected X accounts through X's official API, not a scraping service. It remains disabled until both values are configured on the Worker:
+
+```bash
+npx wrangler secret put X_BEARER_TOKEN
+npx wrangler secret put X_ACCOUNTS
+```
+
+Set `X_ACCOUNTS` to a comma-separated list of up to eight account handles, such as `BBCWorld,Nature`. The token never reaches the browser; `/api/news` returns only post text, date and the canonical X link.
+
 ## Sources
 - Access JWT validation: https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/
 - Worker-first static asset routing: https://developers.cloudflare.com/workers/static-assets/binding/

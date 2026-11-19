@@ -1,10 +1,47 @@
 import {createRemoteJWKSet,jwtVerify} from 'jose';
+import {XMLParser} from 'fast-xml-parser';
 const keysets=new Map();
 export const feeds=[
- {name:'BBC 中文',category:'综合',url:'https://feeds.bbci.co.uk/zhongwen/simp/rss.xml'},
- {name:'Solidot',category:'科技',url:'https://www.solidot.org/index.rss'},
- {name:'ScienceDaily',category:'医学',url:'https://www.sciencedaily.com/rss/health_medicine.xml'}
+ {id:'bbc-zh',name:'BBC 中文',category:'新闻',kind:'刊物',url:'https://feeds.bbci.co.uk/zhongwen/simp/rss.xml',home:'https://www.bbc.com/zhongwen/simp',hosts:['bbc.com','bbc.co.uk']},
+ {id:'bbc-world',name:'BBC World',category:'新闻',kind:'刊物',url:'https://feeds.bbci.co.uk/news/world/rss.xml',home:'https://www.bbc.com/news/world',hosts:['bbc.com','bbc.co.uk']},
+ {id:'bbc-science',name:'BBC Science',category:'科研',kind:'刊物',url:'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml',home:'https://www.bbc.com/news/science_and_environment',hosts:['bbc.com','bbc.co.uk']},
+ {id:'solidot',name:'Solidot',category:'科技',kind:'刊物',url:'https://www.solidot.org/index.rss',home:'https://www.solidot.org/',hosts:['solidot.org']},
+ {id:'hacker-news',name:'Hacker News',category:'科技',kind:'社区',url:'https://news.ycombinator.com/rss',home:'https://news.ycombinator.com/',hosts:['news.ycombinator.com']},
+ {id:'sciencedaily',name:'ScienceDaily',category:'医学',kind:'刊物',url:'https://www.sciencedaily.com/rss/health_medicine.xml',home:'https://www.sciencedaily.com/news/health_medicine/',hosts:['sciencedaily.com']},
+ {id:'nature',name:'Nature',category:'科研',kind:'刊物',url:'https://www.nature.com/nature.rss',home:'https://www.nature.com/nature/',hosts:['nature.com']},
+ {id:'bbc-youtube',name:'BBC News · YouTube',category:'视频',kind:'视频',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UC16niRr50-MSBwiO3YDb3RA',home:'https://www.youtube.com/@BBCNews',hosts:['youtube.com','youtu.be']},
+ {id:'kurzgesagt',name:'Kurzgesagt · YouTube',category:'视频',kind:'视频',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q',home:'https://www.youtube.com/@kurzgesagt',hosts:['youtube.com','youtu.be']}
 ];
+const parser=new XMLParser({ignoreAttributes:false,attributeNamePrefix:'',removeNSPrefix:true,trimValues:true,parseTagValue:false});
+const asArray=value=>value==null?[]:Array.isArray(value)?value:[value];
+const valueOf=value=>typeof value==='string'?value.trim():value&&typeof value==='object'?String(value['#text']??value.__cdata??'').trim():'';
+const validLink=(value,hosts)=>{try{const url=new URL(value);return url.protocol==='https:'&&hosts.some(host=>url.hostname===host||url.hostname.endsWith('.'+host))?url.href:null;}catch{return null;}};
+const feedLink=(value,hosts)=>{for(const link of asArray(value)){const href=typeof link==='string'?link:link?.href||link?.['#text'];const safe=validLink(href,hosts);if(safe&&(!link?.rel||link.rel==='alternate'))return safe;}return null;};
+export function parseFeedEntries(xml,feed){
+ const doc=parser.parse(xml);const raw=doc?.rss?.channel?.item??doc?.feed?.entry??[];
+ return asArray(raw).map(item=>{
+  const title=valueOf(item?.title).slice(0,240);const url=feedLink(item?.link,feed.hosts);
+  const publishedAt=valueOf(item?.pubDate||item?.published||item?.updated);
+  const date=publishedAt&&!Number.isNaN(Date.parse(publishedAt))?new Date(publishedAt).toISOString():null;
+  return title&&url?{title,url,publishedAt:date,source:feed.name,sourceId:feed.id,category:feed.category,kind:feed.kind}:null;
+ }).filter(Boolean).slice(0,24);
+}
+function configuredX(env){
+ const token=env.X_BEARER_TOKEN?.trim();
+ const handles=(env.X_ACCOUNTS||'').split(',').map(value=>value.trim().replace(/^@/,'')).filter(value=>/^[A-Za-z0-9_]{1,15}$/.test(value)).slice(0,8);
+ return token&&handles.length?{token,handles}:null;
+}
+async function xEntries(env){
+ const config=configuredX(env);if(!config)return {source:{id:'x',name:'X 动态',category:'社交',kind:'社交',home:'https://x.com',state:'optional'},items:[]};
+ const endpoint=new URL('https://api.x.com/2/tweets/search/recent');
+ endpoint.searchParams.set('query',`(${config.handles.map(handle=>`from:${handle}`).join(' OR ')}) -is:retweet`);
+ endpoint.searchParams.set('max_results','20');endpoint.searchParams.set('tweet.fields','created_at');
+ try{
+  const response=await fetch(endpoint,{signal:AbortSignal.timeout(8000),headers:{Authorization:`Bearer ${config.token}`}});if(!response.ok)throw new Error('X unavailable');
+  const payload=await response.json();const source={id:'x',name:'X 动态',category:'社交',kind:'社交',home:'https://x.com',state:'active'};
+  return {source,items:asArray(payload.data).map(post=>{const title=String(post?.text||'').replace(/\s+/g,' ').trim().slice(0,240);const url=validLink(`https://x.com/i/web/status/${post?.id||''}`,['x.com']);const date=post?.created_at&&!Number.isNaN(Date.parse(post.created_at))?new Date(post.created_at).toISOString():null;return title&&url?{title,url,publishedAt:date,source:source.name,sourceId:source.id,category:source.category,kind:source.kind}:null;}).filter(Boolean)};
+ }catch{return {source:{id:'x',name:'X 动态',category:'社交',kind:'社交',home:'https://x.com',state:'unavailable'},items:[]};}
+}
 export function settings(env){
  const domain=env.ACCESS_TEAM_DOMAIN?.trim();
  const aud=env.ACCESS_AUD?.trim();
@@ -40,17 +77,22 @@ async function limitedText(response){
  try {while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>500000){await reader.cancel();throw new Error('Feed too large');}chunks.push(value);}}finally{reader.releaseLock();}
  const all=new Uint8Array(size);let offset=0;for(const c of chunks){all.set(c,offset);offset+=c.length;}return new TextDecoder().decode(all);
 }
-async function news(request,ctx){
+const sourceView=({id,name,category,kind,home,state='active'})=>({id,name,category,kind,home,state});
+async function news(request,ctx,env){
  const cache=globalThis.caches?.default;
  const cacheKey=new Request(new URL('/api/news',request.url));
- const hit=cache?await cache.match(cacheKey):null;if(hit)return hit;
+ const refresh=new URL(request.url).searchParams.get('refresh')==='1';
+ const hit=!refresh&&cache?await cache.match(cacheKey):null;if(hit)return hit;
  const results=await Promise.all(feeds.map(async feed=>{
-  try {const r=await fetch(feed.url,{signal:AbortSignal.timeout(8000),headers:{Accept:'application/rss+xml, application/atom+xml, text/xml'}});return {...feed,xml:await limitedText(r)};}
-  catch{return {name:feed.name,category:feed.category,error:'暂时无法更新此来源'};}
+  try {const r=await fetch(feed.url,{signal:AbortSignal.timeout(8000),headers:{Accept:'application/rss+xml, application/atom+xml, text/xml'}});return {source:sourceView(feed),items:parseFeedEntries(await limitedText(r),feed)};}
+  catch{return {source:{...sourceView(feed),state:'unavailable'},items:[]};}
  }));
- const ok=results.some(x=>x.xml);
- const r=Response.json({updatedAt:new Date().toISOString(),feeds:results},{status:ok?200:503,headers:{'Cache-Control':ok?'public, max-age=1800':'no-store'}});
- if(ok&&cache)ctx.waitUntil(cache.put(cacheKey,r.clone()));return r;
+ const x=await xEntries(env);
+ const sources=[...results.map(result=>result.source),x.source];
+ const seen=new Set();const items=[...results.flatMap(result=>result.items),...x.items].filter(item=>{if(seen.has(item.url))return false;seen.add(item.url);return true;}).sort((a,b)=>Date.parse(b.publishedAt||0)-Date.parse(a.publishedAt||0)).slice(0,160);
+ const ok=items.length>0;
+ const r=Response.json({updatedAt:new Date().toISOString(),cacheMinutes:30,items,sources},{status:ok?200:503,headers:{'Cache-Control':ok?'public, max-age=1800':'no-store'}});
+ if(ok&&cache)ctx.waitUntil?.(cache.put(cacheKey,r.clone()));return r;
 }
 export default {async fetch(request,env,ctx){
  const url=new URL(request.url);let path;
@@ -65,7 +107,7 @@ export default {async fetch(request,env,ctx){
   try {await verifyAccess(request.headers.get('Cf-Access-Jwt-Assertion'),cfg);}catch{return secure(new Response('请通过此域名的 Cloudflare Access 登录后访问。',{status:401,headers:{'Content-Type':'text/plain; charset=utf-8'}}),true);}
  }
  try {
-  if(path==='/api/news')return secure(await news(request,ctx));
+  if(path==='/api/news')return secure(await news(request,ctx,env));
   url.pathname=path==='/private'||path==='/private/'?'/private/index.html':path;
   return secure(await env.ASSETS.fetch(new Request(url,request)),isPrivate);
  }catch{return secure(new Response('Service temporarily unavailable',{status:503}),isPrivate);}
