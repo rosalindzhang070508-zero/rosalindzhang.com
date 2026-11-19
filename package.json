@@ -9,6 +9,7 @@
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
+    "@formkit/auto-animate": "0.10.2",
     "fast-xml-parser": "5.12.1",
     "jose": "6.2.13"
   },
